@@ -1,9 +1,8 @@
-
-import Header from './components/Header'
-import ChatBox from './components/ChatBox';
-import AIModels from './components/AIModels';
-
+import axios from 'axios';
 import { useState } from 'react';
+import AIModels from './components/AIModels';
+import ChatBox from './components/ChatBox';
+import Header from './components/Header';
 
 function App() {
   const [selectedModel1, setSelectedModel1] = useState('Model1');
@@ -21,37 +20,58 @@ function App() {
     }
   };
 
-  const handleSendMessage = async (message) => {
+  const handleSendMessage = async (message: string) => {
+    // Set loading states for both models
     setLoading1(true);
     setLoading2(true);
-
+  
     try {
-      const responseA = await fetch(`https://api.example.com/${selectedModel1}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
-      });
-
-      const responseB = await fetch(`https://api.example.com/${selectedModel2}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
-      });
-
-      const data1 = await responseA.json();
-      const data2 = await responseB.json();
-
-      setResponse1(data1.response);
-      setResponse2(data2.response);
+      // Create an array to hold the promises for each selected model
+      const requests = [];
+  
+      // Check if the first model is selected and add its request
+      if (selectedModel1 === 'Model1') {
+        requests.push(
+          axios.post('http://localhost:3000/gemini', { prompt: message })
+        );
+      } else if (selectedModel1 === 'Model2') {
+        requests.push(
+          axios.post('http://localhost:3000/deepseek', { query: message })
+        );
+      }
+  
+      // Check if the second model is selected and add its request
+      if (selectedModel2 === 'Model1') {
+        requests.push(
+          axios.post('http://localhost:3000/gemini', { prompt: message })
+        );
+      } else if (selectedModel2 === 'Model2') {
+        requests.push(
+          axios.post('http://localhost:3000/deepseek', { query: message })
+        );
+      }
+  
+      // Execute all requests in parallel
+      const responses = await Promise.all(requests);
+  
+      // Extract responses based on the order of requests
+      const data1 = responses[0]?.data?.response || 'No response from Model 1';
+      const data2 = responses[1]?.data?.response || 'No response from Model 2';
+  
+      // Update state with the responses
+      setResponse1(data1);
+      setResponse2(data2);
     } catch (error) {
-      console.error("Error fetching responses:", error);
-      setResponse1("Error fetching response from Model 1.");
-      setResponse2("Error fetching response from Model 2.");
+      console.error('Error fetching responses:', error);
+      setResponse1('Error fetching response from Model 1.');
+      setResponse2('Error fetching response from Model 2.');
     } finally {
+      // Reset loading states
       setLoading1(false);
       setLoading2(false);
     }
   };
+  
 
   
   return (

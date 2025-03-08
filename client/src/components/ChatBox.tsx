@@ -7,6 +7,7 @@ const ChatBox = ({ onSendMessage }) => {
   const [message, setMessage] = useState('');
 
   const handleSubmit = (e) => {
+    
     e.preventDefault();
     if (message.trim()) {
       onSendMessage(message);

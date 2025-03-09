@@ -32,22 +32,22 @@ function App() {
       // Check if the first model is selected and add its request
       if (selectedModel1 === 'Model1') {
         requests.push(
-          axios.post('http://localhost:3000/gemini', { prompt: message })
+          axios.post('https://server-mdy2yry3h-yojengrovers-projects.vercel.app/gemini', { prompt: message })
         );
       } else if (selectedModel1 === 'Model2') {
         requests.push(
-          axios.post('http://localhost:3000/deepseek', { query: message })
+          axios.post('https://server-mdy2yry3h-yojengrovers-projects.vercel.app/deepseek', { query: message })
         );
       }
   
       // Check if the second model is selected and add its request
       if (selectedModel2 === 'Model1') {
         requests.push(
-          axios.post('http://localhost:3000/gemini', { prompt: message })
+          axios.post('https://server-mdy2yry3h-yojengrovers-projects.vercel.app/gemini', { prompt: message })
         );
       } else if (selectedModel2 === 'Model2') {
         requests.push(
-          axios.post('http://localhost:3000/deepseek', { query: message })
+          axios.post('https://server-mdy2yry3h-yojengrovers-projects.vercel.app/deepseek', { query: message })
         );
       }
   

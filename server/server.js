@@ -12,6 +12,10 @@ app.use(cors({ origin: 'http://localhost:5173' }));
 app.use('/gemini', getGemini);
 app.use('/deepseek', getDeepseek);
 
+app.get('/', (req, res) => {
+    res.send('Hello, world!');
+  });
+
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}/`);
 });

@@ -8,7 +8,10 @@ const config = require('./config');
 const app = express();
 app.use(express.json());
 const PORT = 3000;
-app.use(cors());
+app.use(cors({
+  origin: '*', // Allow all origins (for debugging)
+  credentials: true
+}));
 
 app.use('/gemini', getGemini);
 app.use('/deepseek', getDeepseek);

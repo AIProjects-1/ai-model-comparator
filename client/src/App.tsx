@@ -20,57 +20,39 @@ function App() {
     }
   };
 
-  const urlg = 'https://ai-model-comparator.onrender.com/gemini'
-  const urld = 'https://ai-model-comparator.onrender.com/deepseek'
+
+  
   const handleSendMessage = async (message: string) => {
-    // Set loading states for both models
     setLoading1(true);
     setLoading2(true);
   
+    const baseUrl = "https://ai-model-comparator.onrender.com/";
+    const modelEndpoints = {
+      Gemini: `${baseUrl}gemini`,
+      DeepSeek: `${baseUrl}deepseek`,
+    };
+  
+    const models = [
+      { model: selectedModel1, setter: setResponse1, setLoading: setLoading1 },
+      { model: selectedModel2, setter: setResponse2, setLoading: setLoading2 },
+    ];
+  
     try {
-      // Create an array to hold the promises for each selected model
-      const requests = [];
-  
-      // Check if the first model is selected and add its request
-      if (selectedModel1 === 'Gemini') {
-        requests.push(
-          axios.post(urlg, { prompt: message })
+      const requests = models
+        .filter(({ model }) => model) // Ensure selected models exist
+        .map(({ model, setter, setLoading }) =>
+          axios
+            .post(modelEndpoints[model], model === "Gemini" ? { prompt: message } : { query: message })
+            .then((res) => setter(res.data.response))
+            .catch((error) => {console.error(`Error fetching response from ${model}:`, error);
+            setter(`Error fetching response from ${model}.`);
+          })
+            .finally(() => setLoading(false)) // Stop loading for each request separately
         );
-      } else if (selectedModel1 === 'DeepSeek') {
-        requests.push(
-          axios.post(urld, { query: message })
-        );
-      }
   
-      // Check if the second model is selected and add its request
-      if (selectedModel2 === 'Gemini') {
-        requests.push(
-          axios.post(urlg, { prompt: message })
-        );
-      } else if (selectedModel2 === 'DeepSeek') {
-        requests.push(
-          axios.post(urld, { query: message })
-        );
-      }
-  
-      // Execute all requests in parallel
-      const responses = await Promise.all(requests);
-  
-      // Extract responses based on the order of requests
-      const data1 = responses[0]?.data?.response || 'No response from Model 1';
-      const data2 = responses[1]?.data?.response || 'No response from Model 2';
-  
-      // Update state with the responses
-      setResponse1(data1);
-      setResponse2(data2);
+      await Promise.allSettled(requests); // Execute requests in parallel
     } catch (error) {
-      console.error('Error fetching responses:', error);
-      setResponse1('Error fetching response from Model 1.');
-      setResponse2('Error fetching response from Model 2.');
-    } finally {
-      // Reset loading states
-      setLoading1(false);
-      setLoading2(false);
+      console.error("Error processing requests:", error);
     }
   };
   

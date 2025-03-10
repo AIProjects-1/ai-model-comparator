@@ -20,7 +20,7 @@ const AIModel = ({ models, selectedModel, onModelChange, response, loading }) =>
     </div>
           <div className="p-6 flex items-center justify-center h-full text-gray-500">
             
-          {!response && loading ? (
+          {loading ? (
             <Loader/>
           ) : response ? (
             <div>{response}</div>

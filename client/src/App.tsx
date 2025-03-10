@@ -20,6 +20,8 @@ function App() {
     }
   };
 
+  const urlg = 'https://ai-model-comparator.onrender.com/gemini'
+  const urld = 'https://ai-model-comparator.onrender.com/deepseek'
   const handleSendMessage = async (message: string) => {
     // Set loading states for both models
     setLoading1(true);
@@ -32,22 +34,22 @@ function App() {
       // Check if the first model is selected and add its request
       if (selectedModel1 === 'Model1') {
         requests.push(
-          axios.post('https://server-mdy2yry3h-yojengrovers-projects.vercel.app/gemini', { prompt: message })
+          axios.post(urlg, { prompt: message })
         );
       } else if (selectedModel1 === 'Model2') {
         requests.push(
-          axios.post('https://server-mdy2yry3h-yojengrovers-projects.vercel.app/deepseek', { query: message })
+          axios.post(urld, { query: message })
         );
       }
   
       // Check if the second model is selected and add its request
       if (selectedModel2 === 'Model1') {
         requests.push(
-          axios.post('https://server-mdy2yry3h-yojengrovers-projects.vercel.app/gemini', { prompt: message })
+          axios.post(urlg, { prompt: message })
         );
       } else if (selectedModel2 === 'Model2') {
         requests.push(
-          axios.post('https://server-mdy2yry3h-yojengrovers-projects.vercel.app/deepseek', { query: message })
+          axios.post(urld, { query: message })
         );
       }
   

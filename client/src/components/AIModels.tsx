@@ -1,9 +1,8 @@
 import AIModel from './AIModel';
-import { useState } from 'react';
 
 const AIModels = ({selectedModel1,selectedModel2,response1,response2,onModelChange,loading1,loading2}) => {
 
-  const models = ['Model1', 'Model2', 'Model3'];
+  const models = ['Gemini', 'DeepSeek', 'Model3'];
 
   return (
     <main className="flex flex-row pt-20 pb-24 px-4">

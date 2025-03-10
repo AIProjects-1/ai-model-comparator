@@ -5,8 +5,8 @@ import ChatBox from './components/ChatBox';
 import Header from './components/Header';
 
 function App() {
-  const [selectedModel1, setSelectedModel1] = useState('Model1');
-  const [selectedModel2, setSelectedModel2] = useState('Model1');
+  const [selectedModel1, setSelectedModel1] = useState('Gemini');
+  const [selectedModel2, setSelectedModel2] = useState('DeepSeek');
   const [response1, setResponse1] = useState('');
   const [response2, setResponse2] = useState('');
   const [loading1, setLoading1] = useState(false);
@@ -32,22 +32,22 @@ function App() {
       const requests = [];
   
       // Check if the first model is selected and add its request
-      if (selectedModel1 === 'Model1') {
+      if (selectedModel1 === 'Gemini') {
         requests.push(
           axios.post(urlg, { prompt: message })
         );
-      } else if (selectedModel1 === 'Model2') {
+      } else if (selectedModel1 === 'DeepSeek') {
         requests.push(
           axios.post(urld, { query: message })
         );
       }
   
       // Check if the second model is selected and add its request
-      if (selectedModel2 === 'Model1') {
+      if (selectedModel2 === 'Gemini') {
         requests.push(
           axios.post(urlg, { prompt: message })
         );
-      } else if (selectedModel2 === 'Model2') {
+      } else if (selectedModel2 === 'DeepSeek') {
         requests.push(
           axios.post(urld, { query: message })
         );

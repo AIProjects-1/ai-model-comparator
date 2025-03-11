@@ -1,5 +1,6 @@
 import Loader from "./Loader"; 
-
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 //@ts-ignore
 const AIModel = ({ models, selectedModel, onModelChange, response, loading }) => {
   return (
@@ -18,12 +19,12 @@ const AIModel = ({ models, selectedModel, onModelChange, response, loading }) =>
         ))}
       </select>
     </div>
-          <div className="p-6 flex items-center justify-center h-full text-gray-500">
+    <div className="p-6 flex flex-col items-center justify-center h-full text-gray-500">
             
           {loading ? (
             <Loader/>
           ) : response ? (
-            <div>{response}</div>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{response}</ReactMarkdown>
           ) : (
             <div>How can i help you today?</div>
           )}
